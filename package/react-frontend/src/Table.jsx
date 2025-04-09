@@ -1,16 +1,19 @@
-
+// src/Table.jsx
 import React from "react";
 
-
-function TableHeader() {
-    return (
-      <thead>
-        <tr><th>Name</th><th>Job</th></tr>
-      </thead>
+function TableHeader(){
+    return(
+        <thread>
+            <tr>
+                <th>Name</th>
+                <th>Job</th>
+                <th>Delete</th>
+            </tr>
+        </thread>
     );
-  }
-  
-  function TableBody(props) {
+}
+// src/Table.jsx
+function TableBody(props) {
     const rows = props.characterData.map((row, index) => {
       return (
         <tr key={index}>
@@ -44,4 +47,3 @@ function TableHeader() {
     );
   }
   export default Table;
-  
