@@ -1,37 +1,39 @@
 // backend.js
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
 
 app.use(express.json());
+app.use(cors());
 
 const users = {
   users_list: [
     {
       id: "xyz789",
-      name: "Charlie",
-      job: "Janitor"
+      name: "Jenna",
+      job: "The best grader Of All Time"
     },
     {
       id: "abc123",
-      name: "Mac",
-      job: "Bouncer"
+      name: "Leila",
+      job: "Bully"
     },
     {
       id: "ppp222",
-      name: "Mac",
-      job: "Professor"
+      name: "Khris From Zone C",
+      job: "The goat"
     },
     {
       id: "yat999",
-      name: "Dee",
-      job: "Aspring actress"
+      name: "Charlotte",
+      job: "Bum"
     },
     {
       id: "zap555",
-      name: "Dennis",
-      job: "Bartender"
+      name: "Gwenie da Pooh",
+      job: "Rose Float"
     }
   ]
 };
@@ -74,14 +76,15 @@ app.get("/users/:id", (req, res) => {
 
 
 const addUser = (user) => {
+  user.id = Math.floor(Math.random() *1000).toString()
   users["users_list"].push(user);
   return user;
 };
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  const new_user = addUser(userToAdd);
+  res.status(201).send(new_user);
 });
 
 const deleteUserById = (id) =>{
@@ -101,9 +104,42 @@ app.delete("/users/:id", (req, res) => {
   if (result === -1) {
     res.status(404).send("your so cool gwen.");
   } else {
-    res.send(result);
+    res.status(204).send(result);
   }
 });
+
+const findUserByJob = (job) => {
+  return users["users_list"].filter(
+    (user) => user["job"] === job
+  );
+};
+
+const findUserByNameAndJob = (name, job) => {
+  return users["users_list"].filter(
+    (user) => user["name"] === name && user["job"] === job
+  );
+};
+
+app.get("/users", (req, res) => {
+  const name = req.query.name;
+  const job = req.query.job;
+
+  let result;
+
+  if (name !== undefined && job !== undefined) {
+    result = findUserByNameAndJob(name, job);
+  } else if (name !== undefined) {
+    result = findUserByName(name);
+  } else if (job !== undefined) {
+    result = findUserByJob(job);
+  } else {
+    result = users["users_list"];
+  }
+
+  res.send({ users_list: result });
+});
+
+
 
 app.listen(port, () => {
   console.log(
