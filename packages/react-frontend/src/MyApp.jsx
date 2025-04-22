@@ -48,12 +48,12 @@ function MyApp() {
     }
 
   //I just added the if res just cuz it seems like thats whats needed in the spec idk tho tbh theres a funny thingy in here
-  function removeOneCharacter(id){
-    fetch(`Http://localhost:8000/users/${id}`, {
+  function removeOneCharacter(_id){
+    fetch(`Http://localhost:8000/users/${_id}`, {
       method: 'Delete',})
       .then((res) => {
         if (res.status === 204){
-        const updated = characters.filter((character) => character.id !== id);
+        const updated = characters.filter((character) => character._id !== _id);
 
         setCharacters(updated);
       }else{
